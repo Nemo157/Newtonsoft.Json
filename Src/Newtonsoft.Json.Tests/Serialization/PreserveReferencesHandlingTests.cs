@@ -1065,6 +1065,52 @@ namespace Newtonsoft.Json.Tests.Serialization
                 "Error reading object reference '1'. Path 'Data.Prop2.MyProperty', line 9, position 20.",
                 () => JsonConvert.DeserializeObject<PropertyItemIsReferenceObject>(json));
         }
+
+        public class EqualsBasedOnIdWithCircularReference
+        {
+            public string Id { get; set; }
+            public EqualsBasedOnIdWithCircularReference CircularReference { get; set; }
+
+            public override int GetHashCode()
+            {
+                return Id.GetHashCode();
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is EqualsBasedOnIdWithCircularReference && ((EqualsBasedOnIdWithCircularReference)obj).Id.Equals(Id);
+            }
+        }
+
+        [Test]
+        public void SerializeEqualsBasedOnIdWithCircularReference()
+        {
+            EqualsBasedOnIdWithCircularReference first = new EqualsBasedOnIdWithCircularReference { Id = "first" };
+            EqualsBasedOnIdWithCircularReference second = new EqualsBasedOnIdWithCircularReference { Id = "second" };
+            EqualsBasedOnIdWithCircularReference otherFirst = new EqualsBasedOnIdWithCircularReference { Id = "first" };
+
+            first.CircularReference = second;
+            second.CircularReference = otherFirst;
+
+            string json = JsonConvert.SerializeObject(first, Formatting.Indented,
+                new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
+
+            Assert.AreEqual(@"{
+  ""$id"": ""1"",
+  ""Id"": ""first"",
+  ""CircularReference"": {
+    ""$id"": ""2"",
+    ""Id"": ""second"",
+    ""CircularReference"": {
+      ""$id"": ""3"",
+      ""Id"": ""first"",
+      ""CircularReference"": null
+    }
+  }
+}", json);
+        }
+
+
     }
 
     public class PropertyItemIsReferenceBody
