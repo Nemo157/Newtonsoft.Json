@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 
 namespace Newtonsoft.Json.Utilities {
-    public class ReferenceEqualsEqualityComparer : IEqualityComparer<object>
+    internal class ReferenceEqualsEqualityComparer : IEqualityComparer<object>
     {
-        public static IEqualityComparer<object> Instance = new ReferenceEqualsEqualityComparer();
+        internal static IEqualityComparer<object> Instance = new ReferenceEqualsEqualityComparer();
 
         private ReferenceEqualsEqualityComparer() {
         }
