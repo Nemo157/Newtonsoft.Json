@@ -123,6 +123,7 @@
     <Compile Include="Utilities\ExpressionReflectionDelegateFactory.cs" />
     <Compile Include="Utilities\ImmutableCollectionsUtils.cs" />
     <Compile Include="Utilities\LinqBridge.cs" />
+    <Compile Include="Utilities\ReferenceEqualsEqualityComparer.cs" />
     <Compile Include="Linq\JPath.cs" />
     <Compile Include="Linq\JPropertyDescriptor.cs" />
     <Compile Include="Linq\JRaw.cs" />

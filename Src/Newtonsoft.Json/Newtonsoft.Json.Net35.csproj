@@ -233,6 +233,7 @@
     <Compile Include="Utilities\ILGeneratorExtensions.cs" />
     <Compile Include="Utilities\ImmutableCollectionsUtils.cs" />
     <Compile Include="Utilities\LinqBridge.cs" />
+    <Compile Include="Utilities\ReferenceEqualsEqualityComparer.cs" />
     <Compile Include="Utilities\ReflectionDelegateFactory.cs" />
     <Compile Include="Utilities\LateBoundReflectionDelegateFactory.cs" />
     <Compile Include="Utilities\MethodCall.cs" />

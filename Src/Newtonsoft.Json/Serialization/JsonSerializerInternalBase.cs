@@ -34,25 +34,6 @@ namespace Newtonsoft.Json.Serialization
 {
     internal abstract class JsonSerializerInternalBase
     {
-        private class ReferenceEqualsEqualityComparer : IEqualityComparer<object>
-        {
-            bool IEqualityComparer<object>.Equals(object x, object y)
-            {
-                return ReferenceEquals(x, y);
-            }
-
-            int IEqualityComparer<object>.GetHashCode(object obj)
-            {
-#if !(NETFX_CORE)
-                // put objects in a bucket based on their reference
-                return RuntimeHelpers.GetHashCode(obj);
-#else
-    // put all objects in the same bucket so ReferenceEquals is called on all
-        return -1;
-#endif
-            }
-        }
-
         private ErrorContext _currentErrorContext;
         private BidirectionalDictionary<string, object> _mappings;
         private bool _serializing;
@@ -80,7 +61,7 @@ namespace Newtonsoft.Json.Serialization
                 if (_mappings == null)
                     _mappings = new BidirectionalDictionary<string, object>(
                         EqualityComparer<string>.Default,
-                        new ReferenceEqualsEqualityComparer(),
+                        ReferenceEqualsEqualityComparer.Instance,
                         "A different value already has the Id '{0}'.",
                         "A different Id has already been assigned for value '{0}'.");
 
